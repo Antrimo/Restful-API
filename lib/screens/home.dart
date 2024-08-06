@@ -1,17 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:restapi/models/model.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
 
-  Future getData() async {
-    var response = await http.get(Uri.https('jsonplaceholder.typicode.com','/posts'),);
-    print(response.body);
-  }
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  List<Github>? github;
 
   @override
   Widget build(BuildContext context) {
-    getData();
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Github Users'),
+      ),
+      body: ListView.builder(
+        itemCount: github?.length ?? 0, // Change this to the length of the github list
+        itemBuilder: (context, index) {
+          if (github == null) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return ListTile(
+              title: Text(github![index].name), // Update this to display relevant data
+            );
+          }
+        },
+      ),
+    );
   }
 }
